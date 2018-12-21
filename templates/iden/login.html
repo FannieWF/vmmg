@@ -15,7 +15,7 @@
             </div>
             <div id="content" class="colM">
                 <div id="content-main">
-                    <form action="{% url 'infomanage:login' %}" method="post" id="login-form">
+                    <form action="{% url 'iden:login' %}" method="post" id="login-form">
                         {% csrf_token %}
                         <input type="hidden">
                         {{ login_error }}

@@ -10,9 +10,7 @@
     <link rel="stylesheet" type="text/css" href="{% static 'H-ui/static/h-ui.admin/skin/green/skin.css' %}" id="skin" />
     <link rel="stylesheet" type="text/css" href="{% static 'H-ui/static/h-ui.admin/css/style.css' %}" />
 
-    <script type="text/javascript" src="{% static 'js/jquery-3.3.1.min.js' %}"></script>
     <script type="text/javascript" src="{% static 'js/common.js' %}"></script>
-    <script type="text/javascript" src="{% static 'bootstrap-3.3.7-dist/js/bootstrap.min.js' %}"></script>
     <script type="text/javascript" src="{% static 'H-ui/lib/jquery/1.9.1/jquery.min.js' %}"></script>
     <script type="text/javascript" src="{% static 'H-ui/lib/layer/2.4/layer.js' %}"></script>
     <script type="text/javascript" src="{% static 'H-ui/static/h-ui/js/H-ui.min.js' %}"></script>
@@ -32,7 +30,7 @@
                             </a>
                             <ul class="dropDown-menu menu radius box-shadow">
                                 <li><a href="#">修改密码</a></li>
-                                <li><a href="{% url 'identify:logout' %}">注销</a></li>
+                                <li><a href="{% url 'iden:logout' %}">注销</a></li>
                             </ul>
                         </li>
                         <li id="Hui-skin" class="dropDown right dropDown_hover">
@@ -56,68 +54,53 @@
     <div class="page-container" style="width: 80%; margin-left: auto; margin-right: auto;">
         <div class="text-c">
             <!--搜索-->
-            <form method="GET" id="searchform" action="{% url 'infomanage:kt' %}">
+            <form method="GET" id="searchform" action="{% url 'manager:vmpzm' %}">
                 {% csrf_token %}
-                <input type="number" placeholder="申报年份" class="input-text" style="width: 230px; margin-bottom: 10px;" name="year">
-
-                <input type="text" placeholder="项目编号" class="input-text" style="width: 230px; margin-bottom: 10px;" name="project_number">
-                <input type="text" placeholder="申报人" class="input-text" style="width: 230px; margin-bottom: 10px;" name="applicant">
-                <input type="text" placeholder="所在学校" class="input-text" style="width: 230px; margin-bottom: 10px;" name="school">
-                <input type="text" placeholder="课题名称" class="input-text" style="width: 230px; margin-bottom: 10px;" name="kt_name">
+                <input type="text" placeholder="虚机名称" class="input-text" style="width: 230px; margin-bottom: 10px;" name="vm_name">
+                <input type="text" placeholder="创建人" class="input-text" style="width: 230px; margin-bottom: 10px;" name="creator">
+                <input type="text" placeholder="申请人" class="input-text" style="width: 230px; margin-bottom: 10px;" name="user">
+                <input type="text" placeholder="申请人工号" class="input-text" style="width: 230px; margin-bottom: 10px;" name="user_gh">
                 <br>
-                <label for="id_kt_type">课题类型:</label>
-                <select name="kt_type" id="id_kt_type" class="select" style="width: 230px; height: 29px; margin-bottom: 10px;">
-                    <option value="" selected>---------</option>
-                    <option value="01">战略课题</option>
-                    <option value="02">重点课题</option>
-                    <option value="03">一般课题</option>
-                    <option value="04">支持课题</option>
-                </select>
-                <label for="id_is_completed_or_not">是否结项：</label>
-                <select id="id_is_completed_or_not" class="select" name="is_completed_or_not" style="width: 230px; height: 29px; margin-bottom: 10px;">
+                <input type="text" placeholder="申请人单位" class="input-text" style="width: 230px; margin-bottom: 10px;" name="ssdw">
+                <input type="text" placeholder="所属单位" class="input-text" style="width: 230px; margin-bottom: 10px;" name="ssdw">
+                <input type="text" placeholder="IP地址" class="input-text" style="width: 230px; margin-bottom: 10px;" name="ip">
+                <input type="text" placeholder="操作系统" class="input-text" style="width: 230px; margin-bottom: 10px;" name="os">
+                <br>
+                <label for="id_backup">是否备份:</label>
+                <select name="backup" id="id_backup" class="select" style="width: 230px; height: 29px; margin-bottom: 10px;">
                     <option value="" selected>---------</option>
                     <option value="True">是</option>
                     <option value="False">否</option>
+                </select>
+                <label for="id_beian">是否备案：</label>
+                <select id="id_beian" class="select" name="beian" style="width: 230px; height: 29px; margin-bottom: 10px;">
+                    <option value="" selected>---------</option>
+                    <option value="not required">无需备案</option>
+                    <option value="YES">是</option>
+                    <option value="NO">否</option>
                 </select>
                 <button name="" id="" class="btn btn-success" type="submit" style="margin-bottom: 10px;"><i class="Hui-iconfont">&#xe665;</i> 检索 </button>
             </form>
         </div>
 
         <div class="cl pd-5 bg-1 bk-gray mt-20">
-            <!--添加课题按钮-->
+            <!--添加虚机配置信息按钮-->
             <span class="l">
-                <a class="btn btn-primary radius" data-toggle="modal" data-target="#ktAdd">
+                <a class="btn btn-primary radius" data-toggle="modal" data-target="#vmpzxxAdd">
                     <i class="Hui-iconfont">&#xe600;</i>
-                    添加课题
+                    添加
                 </a>
             </span>
             <span class="r">
-                <!--页面导航-->
-                    共<span><strong>{{ cur_kt_list.paginator.num_pages }}</strong></span>页，
-                    <span><strong>{{ cur_kt_list.paginator.count }}</strong></span>条记录
-                    {% if cur_kt_list.has_previous %}
-                    <a href="?page=1" class="paginate_button">首页</a>
-                    <a href="?page={{ cur_kt_list.previous_page_number }}" aria-label="Previous" class="paginate_button">
-                        <span aria-hidden="true">&laquo;</span>
-                    </a>
-                    {% endif %}
-                    {% for page in cur_kt_list.paginator.page_range_ext %}
-                    {% ifequal page cur_kt_list.number %}
-                    <a href="?page={{ page }}" class="active paginate_button">{{ page }}</a>
-                    {% else %}
-                    <a href="?page={{ page }}" class="paginate_button">{{ page }}</a>
-                    {% endifequal %}
-                    {% endfor %}
-                    {% if cur_kt_list.has_next %}
-                    <a class="paginate_button" href="?page={{ cur_kt_list.next_page_number }}" aria-label="Next">
-                        <span aria-hidden="true">&raquo;</span>
-                    </a>
-                    <a class="paginate_button" href="?page={{ cur_kt_list.paginator.num_pages }}">末页</a>
-                    {% endif %}
+                <a class="btn btn-link radius" href="{% static 'excels/upload_vmpzxx.xlsx' %}"><i class="Hui-iconfont"> &#xe641;</i>导入模板下载</a>
+                <a class="btn btn-primary radius" data-toggle="modal" data-target="#vmpzxxUpload">
+                    <i class="Hui-iconfont">&#xe645;</i>
+                    批量导入
+                </a>
             </span>
         </div>
         <div class="mt-20">
-            <form id="kts_check" method="post" action="{% url 'infomanage:kt_batch_rem' %}">
+            <form id="vmpzxxs_check" method="post" action="{% url 'manager:vmpzxx_batch_rem' %}">
                 {%csrf_token%}
                     <!--文章列表-->
                     <table class="table  table-border table-bordered table-bg table-hover table-sort table-responsive">
@@ -126,37 +109,45 @@
                                 <th width="30">
                                     <input type="checkbox" id="all_checkbox" onclick="selectOrClearAllCheckbox();" />
                                 </th>
-                                <th>课题名称</th>
-                                <th>课题类型</th>
-                                <th>申报年份</th>
-                                <th>项目编号</th>
-                                <th>申报人</th>
-                                <th>所在学校</th>
-                                <th>是否结项</th>
-                                <th>备注</th>
+                                <th>虚机名称</th>
+                                <th>创建人</th>
+                                <th>申请人</th>
+                                <th>申请人单位</th>
+                                <th>IP地址</th>
+                                <th>操作系统</th>
+                                <th>CPU核数</th>
+                                <th>内存(GB)</th>
+                                <th>硬盘(GB)</th>
+                                <th>是否备份</th>
+                                <th>是否备案</th>
                                 <th>操作</th>
                             </tr>
                         </thead>
-                    {% if cur_kt_list %}
+                    {% if cur_vmpzxx_list %}
                         <tbody>
-                        {% for kt in cur_kt_list %}
+                        {% for vmpzxx in cur_vmpzxx_list %}
                             <tr class="text-c">
                                 <td>
-                                    <input type="checkbox" name="kt_check" value="{{ kt.id }}" />
+                                    <input type="checkbox" name="vmpzxx_check" value="{{ vmpzxx.id }}" >
                                 </td>
-                                <td>{{ kt.kt_name }}</td>
-                                <td>{{ kt.get_kt_type_display }}</td>
-                                <td>{{ kt.year }}</td>
-                                <td>{{ kt.project_number }}</td>
-                                <td>{{ kt.applicant }}</td>
-                                <td>{{ kt.school }}</td>
-                                <td>{{ kt.get_is_completed_or_not_display }}</td>
-                                <td>{{ kt.remark }}</td>
+                                <td>{{ vmpzxx.vm_name }}</td>
+                                <td>{{ vmpzxx.creator }}</td>
+                                <td>{{ vmpzxx.user }}</td>
+                                <td>{{ vmpzxx.ssdw }}</td>
+                                <td>{{ vmpzxx.ip }}</td>
+                                <td>{{ vmpzxx.os }}</td>
+                                <td>{{ vmpzxx.cpu_hs }}</td>
+                                <td>{{ vmpzxx.memory }}</td>
+                                <td>{{ vmpzxx.harddisk }}</td>
+                                <td>{{ vmpzxx.get_backup_display }}</td>
+                                <td>{{ vmpzxx.get_beian_display }}</td>
                                 <td>
-                                    <a href="{% url 'infomanage:kt_change' kt.id %}" class="ml-5" title="修改" style="text-decoration:none">
+                                    <a href="#" class="ml-5" title="查看详情" style="text-decoration:none">
+                                        <i class="Hui-iconfont">&#xe725;</i>
+                                    <a href="{% url 'manager:vmpzxx_change' vmpzxx.id %}" class="ml-5" title="修改" style="text-decoration:none">
                                         <i class="Hui-iconfont">&#xe6df;</i>
                                     </a>
-                                    <a onclick="kt_rem_confirm ( {{ kt.id }} );" class="ml-5" title="删除" style="text-decoration:none">
+                                    <a onclick="rem_confirm ( {{ vmpzxx.id }} );" class="ml-5" title="删除" style="text-decoration:none">
                                         <i class="Hui-iconfont">&#xe6e2;</i>
                                     </a>
                                 </td>
@@ -171,15 +162,39 @@
         </div>
         <div class="cl pd-5 bg-1 bk-gray mt-20">
             <span class="l">
-                <a class="btn btn-danger radius" onclick="ktBatchRemConfirm();">
+                <a class="btn btn-danger radius" onclick="batch_rem_confirm();">
                     <i class="Hui-iconfont">&#xe6e2;</i>批量删除
                 </a>
+            </span>
+            <span class="r">
+                <!--页面导航-->
+                    共<span><strong>{{ cur_vmpzxx_list.paginator.num_pages }}</strong></span>页，
+                    <span><strong>{{ cur_vmpzxx_list.paginator.count }}</strong></span>条记录
+                    {% if cur_vmpzxx_list.has_previous %}
+                    <a href="?page=1" class="paginate_button">首页</a>
+                    <a href="?page={{ cur_vmpzxx_list.previous_page_number }}" aria-label="Previous" class="paginate_button">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                    {% endif %}
+                    {% for page in cur_vmpzxx_list.paginator.page_range_ext %}
+                    {% ifequal page cur_vmpzxx_list.number %}
+                    <a href="?page={{ page }}" class="active paginate_button">{{ page }}</a>
+                    {% else %}
+                    <a href="?page={{ page }}" class="paginate_button">{{ page }}</a>
+                    {% endifequal %}
+                    {% endfor %}
+                    {% if cur_vmpzxx_list.has_next %}
+                    <a class="paginate_button" href="?page={{ cur_vmpzxx_list.next_page_number }}" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
+                    <a class="paginate_button" href="?page={{ cur_vmpzxx_list.paginator.num_pages }}">末页</a>
+                    {% endif %}
             </span>
         </div>
     </div>
 
-    <!--添加课题模态框(Modal)-->
-    <div class="modal fade" id="ktAdd" role="dialog" arai-labelledby="ktAddLabel" tabindex="-1" aria-hidden="true">
+    <!--添加模态框(Modal)-->
+    <div class="modal fade" id="vmpzxxAdd" role="dialog" arai-labelledby="vmpzxxAddLabel" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
@@ -187,30 +202,30 @@
                     &times;
                     </button>
                     <h4 class="modal-title" id="ktAddLabel">
-                        添加课题信息
+                        添加虚机配置信息
                     </h4>
                 </div>
                 <div class="modal-body">
-                    <form id="kt-add" method="post" action="{% url 'infomanage:kt' %}" class="form form-horizontal">
+                    <form method="post" action="{% url 'manager:vmpzm' %}" class="form form-horizontal">
                         {% csrf_token %}
-                        {% for item in kt_form %}
                         <div class="row cl">
-                            {% if item.field.required %}
-                            <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>{{ item.label }}：</label>
-                            <div class="formControls col-xs-8 col-sm-9">
-                                {{ item }}
-                                <!--<input type="{{ item.field.widget.input_type }}" class="input-text" id="{{item.id_for_label}}" name="{{item.html_name}}" required="required">-->
-
+                            {% for item in vmpzxx_add_form %}
+                            <div class="col-sm-6 col-xs-6" style="margin-top:15px; ">
+                                {% if item.field.required %}
+                                <label class="form-label col-xs-4 col-sm-4" style="padding-right: 0px; padding-left: 5px;"><span class="c-red">*</span>{{ item.label }}：</label>
+                                <div class="formControls col-xs-8 col-sm-7">
+                                    {{ item }}
+                                </div>
+                                {% else %}
+                                <label class="form-label col-xs-4 col-sm-4" style="padding-right: 0px; padding-left: 5px;">{{ item.label }}：</label>
+                                <div class="formControls col-xs-8 col-sm-7">
+                                    {{ item }}
+                                </div>
+                                {% endif %}
                             </div>
-                            {% else %}
-                            <label class="form-label col-xs-4 col-sm-2">{{ item.label }}：</label>
-                            <div class="formControls col-xs-8 col-sm-9">
-                                {{ item }}
-                                <!--<input type="{{ item.field.widget.input_type }}" class="input-text" id="{{item.id_for_label}}" name="{{item.html_name}}">-->
-                            </div>
-                            {% endif %}
+                            {% endfor %}
                         </div>
-                        {% endfor %}
+
                         <div id="add_save" class="row cl" style="text-align: center">
                             <input type="submit" name="保存" value="&nbsp;&nbsp;保存&nbsp;&nbsp;" class="btn btn-primary radius" id="add_save_btn" >
                         </div>
@@ -219,6 +234,47 @@
             </div>
         </div>
     </div>
+
+    <!--批量导入模态框(Modal)-->
+    <div class="modal fade" id="vmpzxxUpload" role="dialog" arai-labelledby="vmpzxxUploadLabel" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                    &times;
+                    </button>
+                    <h4 class="modal-title" id="ktAddLabel">
+                        批量导入虚机配置信息
+                    </h4>
+                </div>
+                <div class="modal-body" style="width: 80%; text-decoration:none; margin: auto; padding: auto;">
+                    <form method="post" action="{% url 'manager:vmpzxx_upload' %}" class="form form-horizontal" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <div class="row cl">
+                            <input type="file" name="upload_excel" id="upload_excel" style="display: none">
+                            <div class="input-append" style="text-align: center; margin: auto; padding: auto;">
+                               <input id="uploadurl" class="input-text" type="text"  style="width: 40%" disabled>
+                               <a class="btn btn-success" onclick="$('input[id=upload_excel]').click();">
+                                   <i class="Hui-iconfont">&#xe687;</i> 浏览
+                               </a>
+                            </div>
+                        </div>
+                        <div id="add_save" class="row cl" style="text-align: center">
+                            <input type="submit" name="上传" value="&nbsp;&nbsp;上传&nbsp;&nbsp;" class="btn btn-primary radius" id="add_save_btn" >
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script  type="text/javascript">
+        $('input[id=upload_excel]').change(function() {
+	        var path = $(this).val();
+	        path = path.split('\\');
+	        path = path[path.length-1];
+	        $('#uploadurl').val(path);
+        });
+    </script>
 </body>
 </html>
 

@@ -1,0 +1,4 @@
+Django==1.11.16
+mysql-python==1.2.3
+pytz==2018.7
+xlrd==1.2.0

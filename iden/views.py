@@ -2,7 +2,8 @@
 
 from django.shortcuts import render
 from django.contrib.auth import login, authenticate, logout
-
+from django.http import  HttpResponseRedirect
+from django.urls import reverse
 # Create your views here.
 
 #登录
@@ -13,7 +14,7 @@ def login_view(request):
         user = authenticate(username=username, password=password)
         if user is not None and user.is_active:
             login(request, user)
-            return HttpResponseRedirect(reverse('manager:vmmanage'))
+            return HttpResponseRedirect(reverse('manager:vmpzm'))
         else:
             dicts = {
                 'login_error': '用户名或密码错误。',

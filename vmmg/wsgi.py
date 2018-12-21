@@ -1,5 +1,5 @@
 """
-WSGI config for vmm project.
+WSGI config for vmmg project.
 
 It exposes the WSGI callable as a module-level variable named ``application``.
 
@@ -11,6 +11,6 @@ import os
 
 from django.core.wsgi import get_wsgi_application
 
-os.environ.setdefault("DJANGO_SETTINGS_MODULE", "vmm.settings")
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "vmmg.settings")
 
 application = get_wsgi_application()
